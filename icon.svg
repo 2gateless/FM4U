@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f0a3a"/>
+      <stop offset="100%" stop-color="#0b0419"/>
+    </linearGradient>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e9d5ff"/>
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(168, 85, 247, 0.4)"/>
+      <stop offset="100%" stop-color="rgba(120, 40, 200, 0.1)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base background for app icon -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGrad)"/>
+  <rect x="6" y="6" width="500" height="500" rx="109" fill="none" stroke="url(#borderGrad)" stroke-width="6"/>
+
+  <!-- Radio Icon -->
+  <g fill="none" stroke="url(#iconGrad)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Antenna -->
+    <line x1="330" y1="165" x2="165" y2="100" stroke-width="26"/>
+    
+    <!-- Main Body -->
+    <rect x="90" y="165" width="332" height="240" rx="44" stroke-width="26"/>
+    
+    <!-- Legs -->
+    <line x1="148" y1="405" x2="148" y2="425" stroke-width="24"/>
+    <line x1="364" y1="405" x2="364" y2="425" stroke-width="24"/>
+    
+    <!-- Display Window (Upper Left) -->
+    <rect x="130" y="204" width="112" height="46" rx="14" stroke-width="22"/>
+    
+    <!-- Middle Left Bar -->
+    <line x1="130" y1="288" x2="242" y2="288" stroke-width="22"/>
+    
+    <!-- Right Knob / Dial Circle -->
+    <circle cx="330" cy="265" r="54" stroke-width="22"/>
+    <circle cx="330" cy="265" r="12" fill="url(#iconGrad)" stroke="none"/>
+    
+    <!-- Bottom Right Bar -->
+    <line x1="262" y1="362" x2="378" y2="362" stroke-width="22"/>
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+{
+  "name": "FM Radio",
+  "short_name": "FM Radio",
+  "description": "실시간 FM 라디오 스트리밍 플레이어",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d061f",
+  "theme_color": "#130826",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
