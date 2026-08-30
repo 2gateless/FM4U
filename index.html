@@ -41,18 +41,18 @@
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
-    padding: 16px 12px;
+    padding: 8px 10px;
   }
 
   .app-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 400px;
     background: var(--bg-gradient);
-    border-radius: 36px;
-    padding: 24px 20px 20px;
+    border-radius: 28px;
+    padding: 16px 16px 12px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     position: relative;
     box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(147, 51, 234, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -61,7 +61,7 @@
   /* Header */
   .header-title {
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.12em;
     color: var(--text-secondary);
@@ -74,27 +74,27 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    margin: 4px 0 8px;
+    margin: 0;
   }
 
   .visualizer-bg {
     position: absolute;
-    top: 45%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 240px;
-    height: 140px;
+    width: 200px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     z-index: 1;
     pointer-events: none;
     opacity: 0.65;
   }
 
   .v-bar {
-    width: 4px;
+    width: 3.5px;
     background: linear-gradient(180deg, #ec4899 0%, #a855f7 100%);
     border-radius: 4px;
     height: 20%;
@@ -122,28 +122,28 @@
   }
 
   .headphone-avatar {
-    width: 96px;
-    height: 96px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #6b21a8 0%, #3b0764 100%);
-    border: 3px solid rgba(168, 85, 247, 0.35);
+    border: 2.5px solid rgba(168, 85, 247, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .playing .headphone-avatar {
-    transform: scale(1.05);
+    transform: scale(1.04);
     border-color: #a855f7;
-    box-shadow: 0 0 32px var(--accent-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 24px var(--accent-glow), 0 8px 20px rgba(0, 0, 0, 0.5);
   }
 
   .headphone-avatar svg {
-    width: 46px;
-    height: 46px;
+    width: 36px;
+    height: 36px;
     fill: none;
     stroke: #ffffff;
     stroke-width: 1.8;
@@ -152,23 +152,23 @@
   }
 
   .current-meta {
-    margin-top: 14px;
+    margin-top: 6px;
     text-align: center;
     z-index: 2;
   }
 
   .current-meta .channel-title {
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin: 0 0 4px;
+    margin: 0 0 2px;
     background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .current-meta .channel-sub {
-    font-size: 13px;
+    font-size: 11.5px;
     color: var(--text-secondary);
     font-weight: 500;
   }
@@ -178,14 +178,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    margin: 2px 0 6px;
+    gap: 16px;
+    margin: 0;
     z-index: 2;
   }
 
   .play-main-btn {
-    width: 58px;
-    height: 58px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
     border: 2px solid rgba(255, 255, 255, 0.25);
@@ -193,14 +193,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.45);
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.45);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .play-main-btn:hover {
-    transform: scale(1.06);
-    box-shadow: 0 12px 30px rgba(168, 85, 247, 0.6);
+    transform: scale(1.05);
+    box-shadow: 0 10px 24px rgba(168, 85, 247, 0.6);
   }
 
   .play-main-btn:active {
@@ -216,7 +216,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    padding: 8px;
+    padding: 6px;
   }
 
   .stop-btn:hover {
@@ -228,17 +228,17 @@
   .station-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 7px;
   }
 
   .station-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 18px;
-    padding: 14px 18px;
+    border-radius: 14px;
+    padding: 9px 14px;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
@@ -252,17 +252,17 @@
   .station-card.active {
     background: var(--card-active-bg);
     border-color: var(--card-active-border);
-    box-shadow: 0 8px 24px rgba(147, 51, 234, 0.25);
+    box-shadow: 0 6px 18px rgba(147, 51, 234, 0.25);
   }
 
   .badge-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     flex-shrink: 0;
     color: #ffffff;
@@ -282,20 +282,20 @@
   }
 
   .station-name {
-    font-size: 15px;
+    font-size: 13.5px;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 2px;
+    margin-bottom: 1px;
   }
 
   .station-desc {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
   }
 
   .play-indicator {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -309,22 +309,22 @@
 
   /* Status Bar at Bottom */
   .status-bar {
-    padding: 10px 16px;
+    padding: 7px 12px;
     background: rgba(23, 12, 42, 0.7);
-    border-radius: 14px;
+    border-radius: 10px;
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-secondary);
     border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
   }
 
   .status-dot {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: #a855f7;
   }
@@ -341,10 +341,11 @@
   /* Footer */
   .app-footer {
     text-align: center;
-    font-size: 11px;
-    color: rgba(167, 151, 196, 0.45);
+    font-size: 10px;
+    color: rgba(167, 151, 196, 0.4);
     letter-spacing: 0.02em;
-    padding-top: 2px;
+    padding-top: 0;
+    margin-top: -2px;
   }
 </style>
 </head>
