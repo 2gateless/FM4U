@@ -265,12 +265,36 @@
 
     try{
       // 캐시된 옛날 파일을 받지 않도록 매번 새 요청으로 취급합니다
-      const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
-      const data = await res.json();
-      const streamUrl = data[ch];
+      let streamUrl = null;
+      try {
+        const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
+        if(res.ok){
+          const data = await res.json();
+          streamUrl = data[ch];
+        }
+      } catch(e) {
+        console.warn('streams.json 로드 실패, 실시간 API로 시도합니다:', e);
+      }
 
-      if(!res.ok || !streamUrl){
-        throw new Error('아직 주소가 준비되지 않았습니다 (자동 갱신은 최대 5분 간격입니다)');
+      // streams.json에 주소가 없거나 로드 실패시 직접 방송사 API를 호출하여 즉시 주소를 획득
+      if(!streamUrl){
+        setStatus(name + ' 실시간 주소 획득 중...');
+        if(ch === 'kbs1fm'){
+          const res = await fetch('https://cfpwwwapi.kbs.co.kr/api/v1/landing/live/channel_code/24');
+          const data = await res.json();
+          const item = (data.channel_item && data.channel_item[0]) || (data.channel && data.channel.item && data.channel.item[0]);
+          streamUrl = item && item.service_url;
+        } else if(ch === 'mbc4u'){
+          const res = await fetch('https://sminiplay.imbc.com/aacplay.ashx?agent=webapp&channel=mfm');
+          const text = await res.text();
+          streamUrl = text.trim();
+        } else if(ch === 'cbsmusic'){
+          streamUrl = 'https://m-aac.cbs.co.kr/mweb_cbs939/_definst_/cbs939.stream/playlist.m3u8';
+        }
+      }
+
+      if(!streamUrl){
+        throw new Error('스트림 주소를 가져오지 못했습니다.');
       }
 
       if(streamUrl.includes('.m3u8') && window.Hls && Hls.isSupported()){
