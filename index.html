@@ -41,18 +41,18 @@
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
-    padding: 8px 10px;
+    padding: 12px 14px;
   }
 
   .app-container {
     width: 100%;
-    max-width: 400px;
+    max-width: 460px;
     background: var(--bg-gradient);
-    border-radius: 28px;
-    padding: 16px 16px 12px;
+    border-radius: 32px;
+    padding: 22px 20px 16px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
     position: relative;
     box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(147, 51, 234, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -61,9 +61,9 @@
   /* Header */
   .header-title {
     text-align: center;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--text-secondary);
     text-transform: uppercase;
   }
@@ -74,7 +74,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    margin: 0;
+    margin: 4px 0;
   }
 
   .visualizer-bg {
@@ -82,19 +82,19 @@
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 200px;
-    height: 100px;
+    width: 240px;
+    height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
     z-index: 1;
     pointer-events: none;
     opacity: 0.65;
   }
 
   .v-bar {
-    width: 3.5px;
+    width: 4px;
     background: linear-gradient(180deg, #ec4899 0%, #a855f7 100%);
     border-radius: 4px;
     height: 20%;
@@ -122,11 +122,11 @@
   }
 
   .headphone-avatar {
-    width: 72px;
-    height: 72px;
+    width: 88px;
+    height: 88px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #6b21a8 0%, #3b0764 100%);
-    border: 2.5px solid rgba(168, 85, 247, 0.35);
+    border: 3px solid rgba(168, 85, 247, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,12 +138,12 @@
   .playing .headphone-avatar {
     transform: scale(1.04);
     border-color: #a855f7;
-    box-shadow: 0 0 24px var(--accent-glow), 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 26px var(--accent-glow), 0 8px 20px rgba(0, 0, 0, 0.5);
   }
 
   .headphone-avatar svg {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     fill: none;
     stroke: #ffffff;
     stroke-width: 1.8;
@@ -152,23 +152,23 @@
   }
 
   .current-meta {
-    margin-top: 6px;
+    margin-top: 8px;
     text-align: center;
     z-index: 2;
   }
 
   .current-meta .channel-title {
-    font-size: 17px;
+    font-size: 21px;
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin: 0 0 2px;
+    margin: 0 0 4px;
     background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .current-meta .channel-sub {
-    font-size: 11.5px;
+    font-size: 13.5px;
     color: var(--text-secondary);
     font-weight: 500;
   }
@@ -178,14 +178,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
-    margin: 0;
+    gap: 18px;
+    margin: 2px 0;
     z-index: 2;
   }
 
   .play-main-btn {
-    width: 48px;
-    height: 48px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
     border: 2px solid rgba(255, 255, 255, 0.25);
@@ -216,7 +216,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
-    padding: 6px;
+    padding: 8px;
   }
 
   .stop-btn:hover {
@@ -228,17 +228,17 @@
   .station-list {
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 9px;
   }
 
   .station-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 14px;
-    padding: 9px 14px;
+    border-radius: 16px;
+    padding: 12px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(10px);
@@ -256,13 +256,13 @@
   }
 
   .badge-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 12.5px;
     font-weight: 700;
     flex-shrink: 0;
     color: #ffffff;
@@ -282,20 +282,20 @@
   }
 
   .station-name {
-    font-size: 13.5px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 1px;
+    margin-bottom: 2px;
   }
 
   .station-desc {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-secondary);
   }
 
   .play-indicator {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -309,22 +309,22 @@
 
   /* Status Bar at Bottom */
   .status-bar {
-    padding: 7px 12px;
+    padding: 10px 14px;
     background: rgba(23, 12, 42, 0.7);
-    border-radius: 10px;
+    border-radius: 12px;
     text-align: center;
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-secondary);
     border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
   }
 
   .status-dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: #a855f7;
   }
@@ -341,12 +341,13 @@
   /* Footer */
   .app-footer {
     text-align: center;
-    font-size: 10px;
+    font-size: 11.5px;
     color: rgba(167, 151, 196, 0.4);
     letter-spacing: 0.02em;
-    padding-top: 0;
-    margin-top: -2px;
+    padding-top: 2px;
+    margin-top: 0;
   }
+</style>
 </style>
 </head>
 <body>
@@ -378,10 +379,10 @@
   <!-- Master Controls -->
   <div class="master-controls">
     <button class="play-main-btn" id="masterPlayBtn" title="재생 / 일시정지">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
     </button>
     <button class="stop-btn" id="stopCurrentBtn" title="정지">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6" fill="currentColor"></rect></svg>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6" fill="currentColor"></rect></svg>
     </button>
   </div>
 
@@ -395,7 +396,7 @@
         <div class="station-desc">클래식 · 음악 전문 (93.1MHz)</div>
       </div>
       <div class="play-indicator">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
 
@@ -407,7 +408,7 @@
         <div class="station-desc">가요 · 팝 음악 (91.9MHz)</div>
       </div>
       <div class="play-indicator">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
 
@@ -419,7 +420,7 @@
         <div class="station-desc">음악 전문 레인보우 (93.9MHz)</div>
       </div>
       <div class="play-indicator">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
   </div>
@@ -466,9 +467,9 @@
     });
 
     if(isPlaying){
-      masterPlayBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+      masterPlayBtn.innerHTML = '<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
     } else {
-      masterPlayBtn.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+      masterPlayBtn.innerHTML = '<svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
     }
   }
 
