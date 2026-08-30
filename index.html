@@ -3,239 +3,607 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#12151a" />
-<title>라디오</title>
+<meta name="theme-color" content="#170c2a" />
+<title>FM Radio - Music Player</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
 <style>
-  :root{
-    --bg:#12151a;
-    --card:#1b1f27;
-    --card-active:#232a36;
-    --line:#2a3040;
-    --text:#eef1f6;
-    --sub:#8b93a3;
-    --accent:#6fd3a3;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-    display:flex;
-    justify-content:center;
-  }
-  .app{
-    width:100%;
-    max-width:480px;
-    min-height:100dvh;
-    padding:32px 20px 40px;
-    display:flex;
-    flex-direction:column;
-  }
-  header{
-    margin-bottom:28px;
-  }
-  header h1{
-    font-size:22px;
-    font-weight:700;
-    margin:0 0 4px;
-    letter-spacing:-0.02em;
-  }
-  header p{
-    margin:0;
-    color:var(--sub);
-    font-size:13px;
-  }
-  .section-title{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--sub);
-    font-size:12px;
-    letter-spacing:0.04em;
-    margin:0 0 12px;
-  }
-  .section-title::before{
-    content:"";
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:var(--accent);
-    flex-shrink:0;
-  }
-  .stations{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-  }
-  .station{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:16px;
-    cursor:pointer;
-    transition:background .15s ease, border-color .15s ease;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .station.active{
-    background:var(--card-active);
-    border-color:var(--accent);
-  }
-  .badge{
-    width:48px;
-    height:48px;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:13px;
-    font-weight:700;
-    flex-shrink:0;
-    color:#0d1013;
-  }
-  .badge.kbs{ background:#8ec9ff; }
-  .badge.mbc{ background:#ffd27a; }
-  .badge.cbs{ background:#a9e0c0; }
-
-  .station-info{ flex:1; min-width:0; }
-  .station-info .name{
-    font-size:15px;
-    font-weight:600;
-    margin-bottom:2px;
-  }
-  .station-info .desc{
-    font-size:12.5px;
-    color:var(--sub);
-  }
-  .play-icon{
-    width:36px;
-    height:36px;
-    border-radius:50%;
-    border:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-  }
-  .station.active .play-icon{
-    border-color:var(--accent);
-  }
-  .play-icon svg{ width:14px; height:14px; }
-
-  .eq{
-    display:flex;
-    align-items:flex-end;
-    gap:2px;
-    height:14px;
-  }
-  .eq span{
-    width:3px;
-    background:var(--accent);
-    border-radius:2px;
-    animation:bounce 0.9s ease-in-out infinite;
-  }
-  .eq span:nth-child(1){ animation-delay:0s; }
-  .eq span:nth-child(2){ animation-delay:.2s; }
-  .eq span:nth-child(3){ animation-delay:.4s; }
-  @keyframes bounce{
-    0%,100%{ height:4px; }
-    50%{ height:14px; }
+  :root {
+    --bg-gradient: linear-gradient(180deg, #1d0f36 0%, #110724 100%);
+    --card-bg: rgba(43, 24, 75, 0.45);
+    --card-border: rgba(147, 95, 230, 0.18);
+    --card-active-bg: rgba(69, 36, 122, 0.65);
+    --card-active-border: #a855f7;
+    --text-primary: #f3effe;
+    --text-secondary: #a797c4;
+    --accent-purple: #9333ea;
+    --accent-pink: #ec4899;
+    --accent-cyan: #06b6d4;
+    --accent-glow: rgba(168, 85, 247, 0.4);
+    --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
   }
 
-  .separator{
-    border:none;
-    border-top:1px solid var(--line);
-    margin:28px 0;
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .status{
-    margin-top:auto;
-    padding-top:20px;
-    text-align:center;
-    font-size:12.5px;
-    color:var(--sub);
-    min-height:18px;
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
   }
-  .status.error{ color:#e28b8b; }
+
+  body {
+    background: #0d061b;
+    background-image: radial-gradient(circle at 50% 0%, #2e1065 0%, #0d061b 75%);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .app-container {
+    width: 100%;
+    max-width: 440px;
+    height: 100vh;
+    max-height: 900px;
+    background: var(--bg-gradient);
+    border-radius: 36px;
+    padding: 28px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(147, 51, 234, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  /* Header & Top Bar */
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .top-bar .time {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+  }
+
+  .top-bar-actions {
+    display: flex;
+    gap: 16px;
+  }
+
+  .icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+  }
+  .icon-btn:hover {
+    color: var(--text-primary);
+  }
+
+  /* Player Artwork & Visualizer Section */
+  .hero-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .visualizer-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 280px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.65;
+  }
+
+  .v-bar {
+    width: 4px;
+    background: linear-gradient(180deg, #ec4899 0%, #a855f7 100%);
+    border-radius: 4px;
+    height: 20%;
+    transition: height 0.2s ease;
+  }
+
+  .playing .v-bar {
+    animation: soundWave 1.2s ease-in-out infinite alternate;
+  }
+
+  .v-bar:nth-child(1) { animation-delay: 0.1s; height: 30%; }
+  .v-bar:nth-child(2) { animation-delay: 0.3s; height: 55%; }
+  .v-bar:nth-child(3) { animation-delay: 0.5s; height: 80%; }
+  .v-bar:nth-child(4) { animation-delay: 0.2s; height: 40%; }
+  .v-bar:nth-child(5) { animation-delay: 0.6s; height: 95%; }
+  .v-bar:nth-child(6) { animation-delay: 0.4s; height: 60%; }
+  .v-bar:nth-child(7) { animation-delay: 0.7s; height: 75%; }
+  .v-bar:nth-child(8) { animation-delay: 0.25s; height: 35%; }
+  .v-bar:nth-child(9) { animation-delay: 0.45s; height: 85%; }
+
+  @keyframes soundWave {
+    0% { height: 15%; }
+    50% { height: 95%; }
+    100% { height: 30%; }
+  }
+
+  .headphone-avatar {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #6b21a8 0%, #3b0764 100%);
+    border: 3px solid rgba(168, 85, 247, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .playing .headphone-avatar {
+    transform: scale(1.04);
+    border-color: #a855f7;
+    box-shadow: 0 0 30px var(--accent-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .headphone-avatar svg {
+    width: 52px;
+    height: 52px;
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  }
+
+  .current-meta {
+    margin-top: 16px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .current-meta .channel-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 4px;
+    background: linear-gradient(135deg, #ffffff 0%, #d8b4fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .current-meta .channel-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* Master Controls */
+  .master-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    margin: 16px 0 24px;
+    z-index: 2;
+  }
+
+  .control-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .control-btn:hover {
+    color: var(--text-primary);
+    transform: scale(1.1);
+  }
+
+  .play-main-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.45);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .play-main-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 30px rgba(168, 85, 247, 0.6);
+  }
+
+  .play-main-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* Search & Header bar for List */
+  .search-box {
+    background: rgba(35, 18, 62, 0.6);
+    border: 1px solid rgba(147, 95, 230, 0.15);
+    border-radius: 20px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    backdrop-filter: blur(10px);
+  }
+
+  .search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13.5px;
+    width: 100%;
+  }
+
+  .search-box input::placeholder {
+    color: rgba(167, 151, 196, 0.6);
+  }
+
+  /* Channel List */
+  .station-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 2px;
+  }
+
+  .station-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+  }
+
+  .station-card:hover {
+    background: rgba(57, 32, 99, 0.55);
+    border-color: rgba(168, 85, 247, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .station-card.active {
+    background: var(--card-active-bg);
+    border-color: var(--card-active-border);
+    box-shadow: 0 8px 24px rgba(147, 51, 234, 0.25);
+  }
+
+  .station-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: rgba(147, 51, 234, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    color: #d8b4fe;
+    transition: all 0.25s ease;
+  }
+
+  .station-card.active .station-icon {
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+  }
+
+  .station-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .station-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .station-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .station-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+  }
+
+  .star-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 4px;
+  }
+  .star-btn.active {
+    color: #facc15;
+  }
+
+  /* Status Bar at Bottom */
+  .status-bar {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(23, 12, 42, 0.7);
+    border-radius: 14px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #a855f7;
+  }
+
+  .status-bar.error .status-dot {
+    background: #ef4444;
+  }
+
+  .status-bar.error {
+    color: #fca5a5;
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  /* Footer Navigation */
+  .nav-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 16px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-item.active {
+    color: #c084fc;
+  }
+
+  .nav-item svg {
+    width: 20px;
+    height: 20px;
+  }
 </style>
 </head>
 <body>
-<div class="app">
-  <header>
-    <h1>라디오</h1>
-    <p>KBS 1FM · MBC FM4U · CBS 음악FM</p>
-  </header>
 
-  <div class="section-title">채널 선택</div>
-  <div class="stations" id="stations">
-    <div class="station" data-ch="kbs1fm">
-      <div class="badge kbs">KBS</div>
-      <div class="station-info">
-        <div class="name">KBS 1FM</div>
-        <div class="desc">클래식 · 음악 전문</div>
+<div class="app-container">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <button class="icon-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="time">RADIO PLAYER</div>
+    <div class="top-bar-actions">
+      <button class="icon-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero Player Area -->
+  <div class="hero-player" id="heroPlayer">
+    <div class="visualizer-bg">
+      <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+      <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+      <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+    </div>
+    <div class="headphone-avatar">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"></path>
+        <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+      </svg>
+    </div>
+    <div class="current-meta">
+      <div class="channel-title" id="currentTitle">FM Radio</div>
+      <div class="channel-sub" id="currentSub">원하는 채널을 선택하세요</div>
+    </div>
+  </div>
+
+  <!-- Master Controls -->
+  <div class="master-controls">
+    <button class="control-btn" id="starCurrentBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+    </button>
+    <button class="play-main-btn" id="masterPlayBtn">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+    </button>
+    <button class="control-btn" id="stopCurrentBtn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+    </button>
+  </div>
+
+  <!-- Search Filter -->
+  <div class="search-box">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <input type="text" id="searchInput" placeholder="채널 검색 (KBS, MBC, CBS...)" />
+  </div>
+
+  <!-- Station List -->
+  <div class="station-list" id="stationList">
+    <!-- KBS 1FM -->
+    <div class="station-card" data-ch="kbs1fm" data-name="KBS 1FM" data-desc="클래식 · 음악 전문">
+      <div class="station-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
       </div>
-      <div class="play-icon">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      <div class="station-info">
+        <div class="station-name">KBS 1FM</div>
+        <div class="station-desc">클래식 · 음악 전문 (93.1MHz)</div>
+      </div>
+      <div class="station-action">
+        <button class="star-btn">★</button>
       </div>
     </div>
 
-    <div class="station" data-ch="mbc4u">
-      <div class="badge mbc">MBC</div>
-      <div class="station-info">
-        <div class="name">MBC FM4U</div>
-        <div class="desc">가요 · 팝 음악</div>
+    <!-- MBC FM4U -->
+    <div class="station-card" data-ch="mbc4u" data-name="MBC FM4U" data-desc="가요 · 팝 음악">
+      <div class="station-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
       </div>
-      <div class="play-icon">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      <div class="station-info">
+        <div class="station-name">MBC FM4U</div>
+        <div class="station-desc">가요 · 팝 음악 (91.9MHz)</div>
+      </div>
+      <div class="station-action">
+        <button class="star-btn">★</button>
       </div>
     </div>
 
-    <div class="station" data-ch="cbsmusic">
-      <div class="badge cbs">CBS</div>
-      <div class="station-info">
-        <div class="name">CBS 음악FM</div>
-        <div class="desc">음악 전문 (레인보우)</div>
+    <!-- CBS 음악FM -->
+    <div class="station-card" data-ch="cbsmusic" data-name="CBS 음악FM" data-desc="음악 전문 (레인보우)">
+      <div class="station-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
       </div>
-      <div class="play-icon">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      <div class="station-info">
+        <div class="station-name">CBS 음악FM</div>
+        <div class="station-desc">음악 전문 레인보우 (93.9MHz)</div>
+      </div>
+      <div class="station-action">
+        <button class="star-btn">★</button>
       </div>
     </div>
   </div>
 
-  <hr class="separator" />
+  <!-- Status Bar -->
+  <div class="status-bar" id="statusBar">
+    <div class="status-dot"></div>
+    <span id="statusText">채널을 누르면 라디오가 재생됩니다</span>
+  </div>
 
-  <audio id="player"></audio>
-  <div class="status" id="status">채널을 눌러 재생하세요</div>
+  <!-- Navigation Bar -->
+  <div class="nav-bar">
+    <div class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span>홈</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+      <span>라디오</span>
+    </div>
+    <div class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      <span>즐겨찾기</span>
+    </div>
+  </div>
 </div>
+
+<audio id="player"></audio>
 
 <script>
   const audio = document.getElementById('player');
-  const statusEl = document.getElementById('status');
-  const stationEls = Array.from(document.querySelectorAll('.station'));
+  const statusBar = document.getElementById('statusBar');
+  const statusText = document.getElementById('statusText');
+  const heroPlayer = document.getElementById('heroPlayer');
+  const currentTitle = document.getElementById('currentTitle');
+  const currentSub = document.getElementById('currentSub');
+  const masterPlayBtn = document.getElementById('masterPlayBtn');
+  const stopCurrentBtn = document.getElementById('stopCurrentBtn');
+  const stationCards = Array.from(document.querySelectorAll('.station-card'));
+  const searchInput = document.getElementById('searchInput');
+
   let hls = null;
   let currentCh = null;
+  let currentChName = '';
 
-  function setStatus(text, isError){
-    statusEl.textContent = text;
-    statusEl.classList.toggle('error', !!isError);
+  function setStatus(text, isError = false){
+    statusText.textContent = text;
+    statusBar.classList.toggle('error', isError);
   }
 
-  function renderActive(ch, playing){
-    stationEls.forEach(el => {
-      const isThis = el.dataset.ch === ch;
-      el.classList.toggle('active', isThis && playing);
-      const iconWrap = el.querySelector('.play-icon');
-      if(isThis && playing){
-        iconWrap.innerHTML = '<div class="eq"><span></span><span></span><span></span></div>';
-      } else {
-        iconWrap.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>';
-      }
+  function renderState(isPlaying){
+    heroPlayer.classList.toggle('playing', isPlaying);
+    stationCards.forEach(card => {
+      const isThis = card.dataset.ch === currentCh;
+      card.classList.toggle('active', isThis && isPlaying);
     });
+
+    if(isPlaying){
+      masterPlayBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>';
+    } else {
+      masterPlayBtn.innerHTML = '<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+    }
   }
 
   function stopPlayback(){
@@ -246,25 +614,29 @@
       hls.destroy();
       hls = null;
     }
+    renderState(false);
   }
 
-  async function playChannel(ch, name){
-    // 같은 채널을 다시 누르면 정지
+  async function playChannel(ch, name, desc){
+    // 동일 채널 클릭시 토글
     if(currentCh === ch && !audio.paused){
       stopPlayback();
       currentCh = null;
-      renderActive(null, false);
-      setStatus('채널을 눌러 재생하세요');
+      currentTitle.textContent = 'FM Radio';
+      currentSub.textContent = '원하는 채널을 선택하세요';
+      setStatus('재생이 정지되었습니다');
       return;
     }
 
     stopPlayback();
     currentCh = ch;
-    renderActive(ch, false);
+    currentChName = name;
+    currentTitle.textContent = name;
+    currentSub.textContent = desc;
+
     setStatus(name + ' 연결 중...');
 
     try{
-      // 캐시된 옛날 파일을 받지 않도록 매번 새 요청으로 취급합니다
       let streamUrl = null;
       try {
         const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
@@ -273,10 +645,9 @@
           streamUrl = data[ch];
         }
       } catch(e) {
-        console.warn('streams.json 로드 실패, 실시간 API로 시도합니다:', e);
+        console.warn('streams.json 로드 실패, 실시간 API로 전환합니다.', e);
       }
 
-      // streams.json에 주소가 없거나 로드 실패시 직접 방송사 API를 호출하여 즉시 주소를 획득
       if(!streamUrl){
         setStatus(name + ' 실시간 주소 획득 중...');
         if(ch === 'kbs1fm'){
@@ -294,7 +665,7 @@
       }
 
       if(!streamUrl){
-        throw new Error('스트림 주소를 가져오지 못했습니다.');
+        throw new Error('방송 스트림 주소를 찾을 수 없습니다.');
       }
 
       if(streamUrl.includes('.m3u8') && window.Hls && Hls.isSupported()){
@@ -303,7 +674,8 @@
         hls.attachMedia(audio);
         hls.on(Hls.Events.ERROR, (event, d) => {
           if(d.fatal){
-            setStatus('재생 중 오류가 발생했습니다', true);
+            setStatus('스트림 연결 중 오류 발생', true);
+            renderState(false);
           }
         });
       } else {
@@ -311,31 +683,69 @@
       }
 
       await audio.play();
-      renderActive(ch, true);
-      setStatus('재생 중 — ' + name);
+      renderState(true);
+      setStatus('LIVE · ' + name + ' 방송 재생 중');
     } catch(err){
       console.error(err);
-      renderActive(null, false);
+      renderState(false);
       setStatus('연결 실패: ' + (err && err.message ? err.message : err), true);
       currentCh = null;
     }
   }
 
-  stationEls.forEach(el => {
-    el.addEventListener('click', () => {
-      const ch = el.dataset.ch;
-      const name = el.querySelector('.name').textContent;
-      playChannel(ch, name);
+  // Event Listeners
+  stationCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const ch = card.dataset.ch;
+      const name = card.dataset.name;
+      const desc = card.dataset.desc;
+      playChannel(ch, name, desc);
+    });
+  });
+
+  masterPlayBtn.addEventListener('click', () => {
+    if(!currentCh){
+      // 기본 첫 번째 채널 재생
+      const firstCard = stationCards[0];
+      playChannel(firstCard.dataset.ch, firstCard.dataset.name, firstCard.dataset.desc);
+    } else if(audio.paused){
+      audio.play().then(() => renderState(true)).catch(console.error);
+    } else {
+      audio.pause();
+      renderState(false);
+      setStatus('일시 정지됨 — ' + currentChName);
+    }
+  });
+
+  stopCurrentBtn.addEventListener('click', () => {
+    stopPlayback();
+    currentCh = null;
+    currentTitle.textContent = 'FM Radio';
+    currentSub.textContent = '원하는 채널을 선택하세요';
+    setStatus('재생 정지됨');
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase();
+    stationCards.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      const desc = card.dataset.desc.toLowerCase();
+      if(name.includes(term) || desc.includes(term)){
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
     });
   });
 
   audio.addEventListener('waiting', () => {
     if(currentCh) setStatus('버퍼링 중...');
   });
+
   audio.addEventListener('playing', () => {
     if(currentCh){
-      const name = document.querySelector('.station[data-ch="'+currentCh+'"] .name').textContent;
-      setStatus('재생 중 — ' + name);
+      renderState(true);
+      setStatus('LIVE · ' + currentChName + ' 방송 재생 중');
     }
   });
 </script>
