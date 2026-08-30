@@ -3,26 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<meta name="theme-color" content="#170c2a" />
-<title>FM Radio - Music Player</title>
+<meta name="theme-color" content="#130826" />
+<title>FM Radio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
 <style>
   :root {
-    --bg-gradient: linear-gradient(180deg, #1d0f36 0%, #110724 100%);
+    --bg-gradient: linear-gradient(180deg, #1d0f36 0%, #0f061f 100%);
     --card-bg: rgba(43, 24, 75, 0.45);
     --card-border: rgba(147, 95, 230, 0.18);
-    --card-active-bg: rgba(69, 36, 122, 0.65);
+    --card-active-bg: rgba(79, 38, 140, 0.65);
     --card-active-border: #a855f7;
     --text-primary: #f3effe;
     --text-secondary: #a797c4;
-    --accent-purple: #9333ea;
-    --accent-pink: #ec4899;
-    --accent-cyan: #06b6d4;
-    --accent-glow: rgba(168, 85, 247, 0.4);
-    --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --accent-glow: rgba(168, 85, 247, 0.45);
   }
 
   * {
@@ -34,11 +30,12 @@
     height: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden; /* 한 화면에 고정 */
   }
 
   body {
     background: #0d061b;
-    background-image: radial-gradient(circle at 50% 0%, #2e1065 0%, #0d061b 75%);
+    background-image: radial-gradient(circle at 50% 10%, #2e1065 0%, #0d061b 80%);
     color: var(--text-primary);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
     display: flex;
@@ -49,71 +46,46 @@
 
   .app-container {
     width: 100%;
-    max-width: 440px;
-    height: 100vh;
-    max-height: 900px;
+    max-width: 420px;
+    height: 100dvh;
+    max-height: 840px;
     background: var(--bg-gradient);
     border-radius: 36px;
-    padding: 28px 24px 32px;
+    padding: 32px 24px 28px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     position: relative;
     box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 40px rgba(147, 51, 234, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    overflow: hidden;
   }
 
-  /* Header & Top Bar */
-  .top-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-
-  .top-bar .time {
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+  /* Header */
+  .header-title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     color: var(--text-secondary);
+    text-transform: uppercase;
   }
 
-  .top-bar-actions {
-    display: flex;
-    gap: 16px;
-  }
-
-  .icon-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s;
-  }
-  .icon-btn:hover {
-    color: var(--text-primary);
-  }
-
-  /* Player Artwork & Visualizer Section */
+  /* Player Hero Section */
   .hero-player {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 24px;
     position: relative;
+    margin: 12px 0;
   }
 
   .visualizer-bg {
     position: absolute;
-    top: 50%;
+    top: 45%;
     left: 50%;
-    transform: translate(-50%, -60%);
-    width: 280px;
-    height: 180px;
+    transform: translate(-50%, -50%);
+    width: 260px;
+    height: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -152,24 +124,23 @@
   }
 
   .headphone-avatar {
-    width: 108px;
-    height: 108px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #6b21a8 0%, #3b0764 100%);
-    border: 3px solid rgba(168, 85, 247, 0.4);
+    border: 3px solid rgba(168, 85, 247, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 2px 6px rgba(255, 255, 255, 0.2);
-    position: relative;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
   .playing .headphone-avatar {
-    transform: scale(1.04);
+    transform: scale(1.05);
     border-color: #a855f7;
-    box-shadow: 0 0 30px var(--accent-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 32px var(--accent-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
   }
 
   .headphone-avatar svg {
@@ -180,17 +151,16 @@
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
   }
 
   .current-meta {
-    margin-top: 16px;
+    margin-top: 18px;
     text-align: center;
     z-index: 2;
   }
 
   .current-meta .channel-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: -0.02em;
     margin: 0 0 4px;
@@ -200,7 +170,7 @@
   }
 
   .current-meta .channel-sub {
-    font-size: 13px;
+    font-size: 13.5px;
     color: var(--text-secondary);
     font-weight: 500;
   }
@@ -210,30 +180,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 28px;
-    margin: 16px 0 24px;
+    gap: 32px;
+    margin: 8px 0 16px;
     z-index: 2;
   }
 
-  .control-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-  }
-
-  .control-btn:hover {
-    color: var(--text-primary);
-    transform: scale(1.1);
-  }
-
   .play-main-btn {
-    width: 62px;
-    height: 62px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
     border: 2px solid rgba(255, 255, 255, 0.25);
@@ -252,53 +206,38 @@
   }
 
   .play-main-btn:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
   }
 
-  /* Search & Header bar for List */
-  .search-box {
-    background: rgba(35, 18, 62, 0.6);
-    border: 1px solid rgba(147, 95, 230, 0.15);
-    border-radius: 20px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-    color: var(--text-secondary);
-    font-size: 13.5px;
-    backdrop-filter: blur(10px);
-  }
-
-  .search-box input {
+  .stop-btn {
     background: none;
     border: none;
-    outline: none;
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 13.5px;
-    width: 100%;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 8px;
   }
 
-  .search-box input::placeholder {
-    color: rgba(167, 151, 196, 0.6);
+  .stop-btn:hover {
+    color: #f43f5e;
+    transform: scale(1.1);
   }
 
-  /* Channel List */
+  /* Station Cards Container */
   .station-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    overflow-y: auto;
-    flex: 1;
-    padding-right: 2px;
   }
 
   .station-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 20px;
-    padding: 14px 18px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -310,7 +249,6 @@
   .station-card:hover {
     background: rgba(57, 32, 99, 0.55);
     border-color: rgba(168, 85, 247, 0.35);
-    transform: translateY(-2px);
   }
 
   .station-card.active {
@@ -319,25 +257,25 @@
     box-shadow: 0 8px 24px rgba(147, 51, 234, 0.25);
   }
 
-  .station-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
+  .badge-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
     flex-shrink: 0;
-    background: rgba(147, 51, 234, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    color: #d8b4fe;
-    transition: all 0.25s ease;
+    color: #ffffff;
+    background: rgba(147, 51, 234, 0.25);
+    border: 1px solid rgba(168, 85, 247, 0.3);
   }
 
-  .station-card.active .station-icon {
+  .station-card.active .badge-icon {
     background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
-    color: #ffffff;
-    border-color: transparent;
     box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+    border-color: transparent;
   }
 
   .station-info {
@@ -346,45 +284,34 @@
   }
 
   .station-name {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: 3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 2px;
   }
 
   .station-desc {
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--text-secondary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .station-action {
+  .play-indicator {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
     color: var(--text-secondary);
   }
 
-  .star-btn {
-    background: none;
-    border: none;
-    color: var(--text-secondary);
-    cursor: pointer;
-    padding: 4px;
-  }
-  .star-btn.active {
-    color: #facc15;
+  .station-card.active .play-indicator {
+    color: #a855f7;
   }
 
   /* Status Bar at Bottom */
   .status-bar {
-    margin-top: 16px;
-    padding: 10px 14px;
+    padding: 10px 16px;
     background: rgba(23, 12, 42, 0.7);
     border-radius: 14px;
     text-align: center;
@@ -412,55 +339,13 @@
     color: #fca5a5;
     border-color: rgba(239, 68, 68, 0.2);
   }
-
-  /* Footer Navigation */
-  .nav-bar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding-top: 16px;
-    margin-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-  }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: var(--text-secondary);
-    font-size: 11px;
-    font-weight: 500;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .nav-item.active {
-    color: #c084fc;
-  }
-
-  .nav-item svg {
-    width: 20px;
-    height: 20px;
-  }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <button class="icon-btn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-    </button>
-    <div class="time">RADIO PLAYER</div>
-    <div class="top-bar-actions">
-      <button class="icon-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-      </button>
-    </div>
-  </div>
+  <!-- Top Header -->
+  <div class="header-title">RADIO PLAYER</div>
 
   <!-- Hero Player Area -->
   <div class="hero-player" id="heroPlayer">
@@ -477,71 +362,56 @@
       </svg>
     </div>
     <div class="current-meta">
-      <div class="channel-title" id="currentTitle">FM Radio</div>
-      <div class="channel-sub" id="currentSub">원하는 채널을 선택하세요</div>
+      <div class="channel-title" id="currentTitle">FM RADIO</div>
+      <div class="channel-sub" id="currentSub">채널을 선택하세요</div>
     </div>
   </div>
 
   <!-- Master Controls -->
   <div class="master-controls">
-    <button class="control-btn" id="starCurrentBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-    </button>
-    <button class="play-main-btn" id="masterPlayBtn">
+    <button class="play-main-btn" id="masterPlayBtn" title="재생 / 일시정지">
       <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
     </button>
-    <button class="control-btn" id="stopCurrentBtn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+    <button class="stop-btn" id="stopCurrentBtn" title="정지">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><rect x="9" y="9" width="6" height="6" fill="currentColor"></rect></svg>
     </button>
   </div>
 
-  <!-- Search Filter -->
-  <div class="search-box">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-    <input type="text" id="searchInput" placeholder="채널 검색 (KBS, MBC, CBS...)" />
-  </div>
-
-  <!-- Station List -->
-  <div class="station-list" id="stationList">
+  <!-- Station List (Only KBS, MBC, CBS) -->
+  <div class="station-list">
     <!-- KBS 1FM -->
-    <div class="station-card" data-ch="kbs1fm" data-name="KBS 1FM" data-desc="클래식 · 음악 전문">
-      <div class="station-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-      </div>
+    <div class="station-card" data-ch="kbs1fm" data-name="KBS 1FM" data-desc="클래식 · 음악 전문 (93.1MHz)">
+      <div class="badge-icon">KBS</div>
       <div class="station-info">
         <div class="station-name">KBS 1FM</div>
         <div class="station-desc">클래식 · 음악 전문 (93.1MHz)</div>
       </div>
-      <div class="station-action">
-        <button class="star-btn">★</button>
+      <div class="play-indicator">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
 
     <!-- MBC FM4U -->
-    <div class="station-card" data-ch="mbc4u" data-name="MBC FM4U" data-desc="가요 · 팝 음악">
-      <div class="station-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-      </div>
+    <div class="station-card" data-ch="mbc4u" data-name="MBC FM4U" data-desc="가요 · 팝 음악 (91.9MHz)">
+      <div class="badge-icon">MBC</div>
       <div class="station-info">
         <div class="station-name">MBC FM4U</div>
         <div class="station-desc">가요 · 팝 음악 (91.9MHz)</div>
       </div>
-      <div class="station-action">
-        <button class="star-btn">★</button>
+      <div class="play-indicator">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
 
     <!-- CBS 음악FM -->
-    <div class="station-card" data-ch="cbsmusic" data-name="CBS 음악FM" data-desc="음악 전문 (레인보우)">
-      <div class="station-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-      </div>
+    <div class="station-card" data-ch="cbsmusic" data-name="CBS 음악FM" data-desc="음악 전문 (93.9MHz)">
+      <div class="badge-icon">CBS</div>
       <div class="station-info">
         <div class="station-name">CBS 음악FM</div>
         <div class="station-desc">음악 전문 레인보우 (93.9MHz)</div>
       </div>
-      <div class="station-action">
-        <button class="star-btn">★</button>
+      <div class="play-indicator">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
       </div>
     </div>
   </div>
@@ -549,23 +419,7 @@
   <!-- Status Bar -->
   <div class="status-bar" id="statusBar">
     <div class="status-dot"></div>
-    <span id="statusText">채널을 누르면 라디오가 재생됩니다</span>
-  </div>
-
-  <!-- Navigation Bar -->
-  <div class="nav-bar">
-    <div class="nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-      <span>홈</span>
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
-      <span>라디오</span>
-    </div>
-    <div class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-      <span>즐겨찾기</span>
-    </div>
+    <span id="statusText">채널을 눌러 재생하세요</span>
   </div>
 </div>
 
@@ -581,7 +435,6 @@
   const masterPlayBtn = document.getElementById('masterPlayBtn');
   const stopCurrentBtn = document.getElementById('stopCurrentBtn');
   const stationCards = Array.from(document.querySelectorAll('.station-card'));
-  const searchInput = document.getElementById('searchInput');
 
   let hls = null;
   let currentCh = null;
@@ -618,12 +471,11 @@
   }
 
   async function playChannel(ch, name, desc){
-    // 동일 채널 클릭시 토글
     if(currentCh === ch && !audio.paused){
       stopPlayback();
       currentCh = null;
-      currentTitle.textContent = 'FM Radio';
-      currentSub.textContent = '원하는 채널을 선택하세요';
+      currentTitle.textContent = 'FM RADIO';
+      currentSub.textContent = '채널을 선택하세요';
       setStatus('재생이 정지되었습니다');
       return;
     }
@@ -665,7 +517,7 @@
       }
 
       if(!streamUrl){
-        throw new Error('방송 스트림 주소를 찾을 수 없습니다.');
+        throw new Error('방송 스트림 주소를 가져오지 못했습니다.');
       }
 
       if(streamUrl.includes('.m3u8') && window.Hls && Hls.isSupported()){
@@ -705,7 +557,6 @@
 
   masterPlayBtn.addEventListener('click', () => {
     if(!currentCh){
-      // 기본 첫 번째 채널 재생
       const firstCard = stationCards[0];
       playChannel(firstCard.dataset.ch, firstCard.dataset.name, firstCard.dataset.desc);
     } else if(audio.paused){
@@ -720,22 +571,9 @@
   stopCurrentBtn.addEventListener('click', () => {
     stopPlayback();
     currentCh = null;
-    currentTitle.textContent = 'FM Radio';
-    currentSub.textContent = '원하는 채널을 선택하세요';
+    currentTitle.textContent = 'FM RADIO';
+    currentSub.textContent = '채널을 선택하세요';
     setStatus('재생 정지됨');
-  });
-
-  searchInput.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    stationCards.forEach(card => {
-      const name = card.dataset.name.toLowerCase();
-      const desc = card.dataset.desc.toLowerCase();
-      if(name.includes(term) || desc.includes(term)){
-        card.style.display = 'flex';
-      } else {
-        card.style.display = 'none';
-      }
-    });
   });
 
   audio.addEventListener('waiting', () => {
