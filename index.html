@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#12151a" />
+<title>라디오</title>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+<style>
+  :root{
+    --bg:#12151a;
+    --card:#1b1f27;
+    --card-active:#232a36;
+    --line:#2a3040;
+    --text:#eef1f6;
+    --sub:#8b93a3;
+    --accent:#6fd3a3;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    display:flex;
+    justify-content:center;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    min-height:100dvh;
+    padding:32px 20px 40px;
+    display:flex;
+    flex-direction:column;
+  }
+  header{
+    margin-bottom:28px;
+  }
+  header h1{
+    font-size:22px;
+    font-weight:700;
+    margin:0 0 4px;
+    letter-spacing:-0.02em;
+  }
+  header p{
+    margin:0;
+    color:var(--sub);
+    font-size:13px;
+  }
+  .section-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--sub);
+    font-size:12px;
+    letter-spacing:0.04em;
+    margin:0 0 12px;
+  }
+  .section-title::before{
+    content:"";
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--accent);
+    flex-shrink:0;
+  }
+  .stations{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .station{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px;
+    cursor:pointer;
+    transition:background .15s ease, border-color .15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .station.active{
+    background:var(--card-active);
+    border-color:var(--accent);
+  }
+  .badge{
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:700;
+    flex-shrink:0;
+    color:#0d1013;
+  }
+  .badge.kbs{ background:#8ec9ff; }
+  .badge.mbc{ background:#ffd27a; }
+  .badge.cbs{ background:#a9e0c0; }
+
+  .station-info{ flex:1; min-width:0; }
+  .station-info .name{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:2px;
+  }
+  .station-info .desc{
+    font-size:12.5px;
+    color:var(--sub);
+  }
+  .play-icon{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .station.active .play-icon{
+    border-color:var(--accent);
+  }
+  .play-icon svg{ width:14px; height:14px; }
+
+  .eq{
+    display:flex;
+    align-items:flex-end;
+    gap:2px;
+    height:14px;
+  }
+  .eq span{
+    width:3px;
+    background:var(--accent);
+    border-radius:2px;
+    animation:bounce 0.9s ease-in-out infinite;
+  }
+  .eq span:nth-child(1){ animation-delay:0s; }
+  .eq span:nth-child(2){ animation-delay:.2s; }
+  .eq span:nth-child(3){ animation-delay:.4s; }
+  @keyframes bounce{
+    0%,100%{ height:4px; }
+    50%{ height:14px; }
+  }
+
+  .separator{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:28px 0;
+  }
+
+  .status{
+    margin-top:auto;
+    padding-top:20px;
+    text-align:center;
+    font-size:12.5px;
+    color:var(--sub);
+    min-height:18px;
+  }
+  .status.error{ color:#e28b8b; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>라디오</h1>
+    <p>KBS 1FM · MBC FM4U · CBS 음악FM</p>
+  </header>
+
+  <div class="section-title">채널 선택</div>
+  <div class="stations" id="stations">
+    <div class="station" data-ch="kbs1fm">
+      <div class="badge kbs">KBS</div>
+      <div class="station-info">
+        <div class="name">KBS 1FM</div>
+        <div class="desc">클래식 · 음악 전문</div>
+      </div>
+      <div class="play-icon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      </div>
+    </div>
+
+    <div class="station" data-ch="mbc4u">
+      <div class="badge mbc">MBC</div>
+      <div class="station-info">
+        <div class="name">MBC FM4U</div>
+        <div class="desc">가요 · 팝 음악</div>
+      </div>
+      <div class="play-icon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      </div>
+    </div>
+
+    <div class="station" data-ch="cbsmusic">
+      <div class="badge cbs">CBS</div>
+      <div class="station-info">
+        <div class="name">CBS 음악FM</div>
+        <div class="desc">음악 전문 (레인보우)</div>
+      </div>
+      <div class="play-icon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <hr class="separator" />
+
+  <audio id="player"></audio>
+  <div class="status" id="status">채널을 눌러 재생하세요</div>
+</div>
+
+<script>
+  const audio = document.getElementById('player');
+  const statusEl = document.getElementById('status');
+  const stationEls = Array.from(document.querySelectorAll('.station'));
+  let hls = null;
+  let currentCh = null;
+
+  function setStatus(text, isError){
+    statusEl.textContent = text;
+    statusEl.classList.toggle('error', !!isError);
+  }
+
+  function renderActive(ch, playing){
+    stationEls.forEach(el => {
+      const isThis = el.dataset.ch === ch;
+      el.classList.toggle('active', isThis && playing);
+      const iconWrap = el.querySelector('.play-icon');
+      if(isThis && playing){
+        iconWrap.innerHTML = '<div class="eq"><span></span><span></span><span></span></div>';
+      } else {
+        iconWrap.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M6 4L20 12L6 20V4Z" fill="#eef1f6"/></svg>';
+      }
+    });
+  }
+
+  function stopPlayback(){
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    if(hls){
+      hls.destroy();
+      hls = null;
+    }
+  }
+
+  async function playChannel(ch, name){
+    // 같은 채널을 다시 누르면 정지
+    if(currentCh === ch && !audio.paused){
+      stopPlayback();
+      currentCh = null;
+      renderActive(null, false);
+      setStatus('채널을 눌러 재생하세요');
+      return;
+    }
+
+    stopPlayback();
+    currentCh = ch;
+    renderActive(ch, false);
+    setStatus(name + ' 연결 중...');
+
+    try{
+      // 캐시된 옛날 파일을 받지 않도록 매번 새 요청으로 취급합니다
+      const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
+      const data = await res.json();
+      const streamUrl = data[ch];
+
+      if(!res.ok || !streamUrl){
+        throw new Error('아직 주소가 준비되지 않았습니다 (자동 갱신은 최대 5분 간격입니다)');
+      }
+
+      if(streamUrl.includes('.m3u8') && window.Hls && Hls.isSupported()){
+        hls = new Hls();
+        hls.loadSource(streamUrl);
+        hls.attachMedia(audio);
+        hls.on(Hls.Events.ERROR, (event, d) => {
+          if(d.fatal){
+            setStatus('재생 중 오류가 발생했습니다', true);
+          }
+        });
+      } else {
+        audio.src = streamUrl;
+      }
+
+      await audio.play();
+      renderActive(ch, true);
+      setStatus('재생 중 — ' + name);
+    } catch(err){
+      console.error(err);
+      renderActive(null, false);
+      setStatus('연결 실패: ' + (err && err.message ? err.message : err), true);
+      currentCh = null;
+    }
+  }
+
+  stationEls.forEach(el => {
+    el.addEventListener('click', () => {
+      const ch = el.dataset.ch;
+      const name = el.querySelector('.name').textContent;
+      playChannel(ch, name);
+    });
+  });
+
+  audio.addEventListener('waiting', () => {
+    if(currentCh) setStatus('버퍼링 중...');
+  });
+  audio.addEventListener('playing', () => {
+    if(currentCh){
+      const name = document.querySelector('.station[data-ch="'+currentCh+'"] .name').textContent;
+      setStatus('재생 중 — ' + name);
+    }
+  });
+</script>
+</body>
+</html>
