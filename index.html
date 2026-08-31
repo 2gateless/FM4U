@@ -423,7 +423,7 @@
     </div>
 
     <!-- CBS 음악FM -->
-    <div class="station-card" data-ch="cbsmusic" data-name="CBS 음악FM" data-desc="음악 전문 (93.9MHz)">
+    <div class="station-card" data-ch="cbsmusic" data-name="CBS 음악FM" data-desc="음악 전문 레인보우 (93.9MHz)">
       <div class="badge-icon">CBS</div>
       <div class="station-info">
         <div class="station-name">CBS 음악FM</div>
@@ -463,6 +463,7 @@
   let hls = null;
   let currentCh = null;
   let currentChName = '';
+  let requestToken = 0; // 채널을 빠르게 연속으로 눌러도 마지막 요청만 반영되도록 하는 순번표
 
   function setStatus(text, isError = false){
     statusText.textContent = text;
@@ -504,6 +505,10 @@
       return;
     }
 
+    // 이 호출만의 고유 번호를 발급합니다. 재생 도중 다른 채널을 또 누르면
+    // requestToken이 바뀌므로, 뒤늦게 도착한 이전 요청 결과는 무시됩니다.
+    const myToken = ++requestToken;
+
     stopPlayback();
     currentCh = ch;
     currentChName = name;
@@ -513,35 +518,17 @@
     setStatus(name + ' 연결 중...');
 
     try{
-      let streamUrl = null;
-      try {
-        const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
-        if(res.ok){
-          const data = await res.json();
-          streamUrl = data[ch];
-        }
-      } catch(e) {
-        console.warn('streams.json 로드 실패, 실시간 API로 전환합니다.', e);
+      const res = await fetch('streams.json?t=' + Date.now(), { cache: 'no-store' });
+      if(myToken !== requestToken) return; // 그 사이 다른 채널을 눌렀으면 여기서 중단
+
+      if(!res.ok){
+        throw new Error('streams.json을 불러오지 못했습니다 (' + res.status + ')');
       }
+      const data = await res.json();
+      const streamUrl = data[ch];
 
       if(!streamUrl){
-        setStatus(name + ' 실시간 주소 획득 중...');
-        if(ch === 'kbs1fm'){
-          const res = await fetch('https://cfpwwwapi.kbs.co.kr/api/v1/landing/live/channel_code/24');
-          const data = await res.json();
-          const item = (data.channel_item && data.channel_item[0]) || (data.channel && data.channel.item && data.channel.item[0]);
-          streamUrl = item && item.service_url;
-        } else if(ch === 'mbc4u'){
-          const res = await fetch('https://sminiplay.imbc.com/aacplay.ashx?agent=webapp&channel=mfm');
-          const text = await res.text();
-          streamUrl = text.trim();
-        } else if(ch === 'cbsmusic'){
-          streamUrl = 'https://m-aac.cbs.co.kr/mweb_cbs939/_definst_/cbs939.stream/playlist.m3u8';
-        }
-      }
-
-      if(!streamUrl){
-        throw new Error('방송 스트림 주소를 가져오지 못했습니다.');
+        throw new Error('방송 스트림 주소를 가져오지 못했습니다. 잠시 후 다시 시도해주세요.');
       }
 
       if(streamUrl.includes('.m3u8') && window.Hls && Hls.isSupported()){
@@ -549,6 +536,7 @@
         hls.loadSource(streamUrl);
         hls.attachMedia(audio);
         hls.on(Hls.Events.ERROR, (event, d) => {
+          if(myToken !== requestToken) return;
           if(d.fatal){
             setStatus('스트림 연결 중 오류 발생', true);
             renderState(false);
@@ -559,9 +547,12 @@
       }
 
       await audio.play();
+      if(myToken !== requestToken) return; // 재생 시작 직전에 채널이 또 바뀌었을 경우 대비
+
       renderState(true);
       setStatus('LIVE · ' + name + ' 방송 재생 중');
     } catch(err){
+      if(myToken !== requestToken) return; // 이미 낡은 요청이면 에러도 무시
       console.error(err);
       renderState(false);
       setStatus('연결 실패: ' + (err && err.message ? err.message : err), true);
