@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fm-radio-v1';
+const CACHE_NAME = 'fm-radio-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -7,8 +7,7 @@ const ASSETS = [
   './icon-192.png',
   './icon-512.png',
   './apple-touch-icon.png',
-  './favicon.png',
-  './streams.json'
+  './favicon.png'
 ];
 
 self.addEventListener('install', (event) => {
